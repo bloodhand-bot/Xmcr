@@ -8,7 +8,7 @@ public class PCRTester {
 
     public static void main(String[] args) throws InterruptedException {
 
-        String className = "test.examples.AppenderAttachableImplTester";
+        String className = "test.examples.ConcurrentHashMapTester";
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

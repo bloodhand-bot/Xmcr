@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jdk1.1_subset_rewritten">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/benchmarks/BufferedInputStream/jar/jdk1.1_subset_rewritten.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

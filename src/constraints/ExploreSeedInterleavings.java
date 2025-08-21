@@ -232,7 +232,7 @@ public class ExploreSeedInterleavings {
 		patterns = rerangePattern(patterns);
 		if (patterns.size() > 0) {
 			for (Pattern currentPattern : patterns) {
-				checkPattern(engine, trace, currentPattern);
+				checkPattern(engine, trace, currentPattern); //这里会调用generateScheduleWithTaskBack
 			}
 		}
 	}
@@ -823,11 +823,11 @@ public class ExploreSeedInterleavings {
 			engine.preprocess(trace);
 
 			long constrainSolvingStrat = System.currentTimeMillis();
-			//generate causal prefixes
-//			genereteCausallyDifferentSchedules(engine,trace,schedule_prefix);
+			//这是mcr的函数
+			//generateCausallyDifferentSchedules(engine,trace,schedule_prefix);
 			//generate pattern schedules
 			generatePatternSchedules(engine,trace,schedule_prefix);
-//			System.out.println(schedules.size());
+			//System.out.println(schedules.size());
 			long constrainSolvingEnd = System.currentTimeMillis();
 
 			ExplorationStatsListener.constraintsTime += (constrainSolvingEnd - constrainSolvingStrat);

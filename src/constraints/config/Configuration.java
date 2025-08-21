@@ -8,15 +8,15 @@ import java.util.*;
 
 public class Configuration {
 
-//    public static final String PROGRAM_NAME = "rv-predict";
+    //    public static final String PROGRAM_NAME = "rv-predict";
     public static final String YES = "yes";
     public static final String NO = "no";
     @Parameter(description="<java_command_line>")
 
 
-	public static Map<Integer, Set<Integer>> SDG = null;
-	public static ReachabilityEngine reachSDG = null;
-	public static Map<String, Integer> mapNodeLabelToId = null;
+    public static Map<Integer, Set<Integer>> SDG = null;
+    public static ReachabilityEngine reachSDG = null;
+    public static Map<String, Integer> mapNodeLabelToId = null;
 
     public static boolean DEBUG = false;
 
@@ -24,11 +24,16 @@ public class Configuration {
     public static String mode = "SC";  //default: SC
 
     //ecoop -- using static dependency analysis to optimize mcr
-	public static boolean Optimize = false;     //use or not use optimization by SDG
-	public static boolean plus = false;  //mcr+ or mcr+s  true: mcs+s
+    public static boolean Optimize = false;     //use or not use optimization by SDG
+    public static boolean plus = false;  //mcr+ or mcr+s  true: mcs+s
 
-	//toplas  -- optimal mcr
+    //toplas  -- optimal mcr
     public static boolean OMCR = false;
+
+    //constraints filter -- using constraint filtering to optimize constraint solving
+    public static boolean useConstraintsFilter = false;  //use or not use constraints filter
+    public static String constraintsFilterMode = "simple";  //constraints filter mode: "simple" or "data_extraction"
+    //public static boolean constraintsFilterClearFiles = true; //whether to clear data files on program start
 
     //for naming output file
     public static String class_name = null;
@@ -47,6 +52,11 @@ public class Configuration {
         //configure optimal mcr
         OMCR = Boolean.parseBoolean(System.getProperty("opt_mcr"));
 
+        //configure constraints filter
+        useConstraintsFilter = Boolean.parseBoolean(instance.getProperty("use_constraints_filter"));
+        constraintsFilterMode = instance.getProperty("constraints_filter_mode", "simple");
+        //constraintsFilterClearFiles = Boolean.parseBoolean(instance.getProperty("constraints_filter_clear_files", "true"));
+
         //vm option by -D
         class_name = System.getProperty("class_name");
 
@@ -60,12 +70,12 @@ public class Configuration {
             mapNodeLabelToId = ReadSDG.NodeToId();
         }
     }
-	
+
     public static long numReads;
     public static long rwConstraints;
     public static long solveTime;
-    
-	//end
+
+    //end
 
     public final static String opt_only_log = "--log";
     @Parameter(names = opt_only_log, description = "Record execution in given directory (no prediction)", descriptionKey = "1000")
@@ -76,7 +86,7 @@ public class Configuration {
     @Parameter(names = opt_log_output, description = "Output of the logged execution [yes|no|<file>]", hidden = true, descriptionKey = "1010")
     public String log_output = YES;
 
- 	final static String opt_optlog = "--with-profile";
+    final static String opt_optlog = "--with-profile";
     @Parameter(names = opt_optlog, description = "Use profiling to optimize logging size", hidden = true, descriptionKey = "1020")
     public boolean optlog;
 
@@ -99,77 +109,77 @@ public class Configuration {
     public String predict_dir = null;
     public boolean predict = true;
 
-//	final static String opt_rmm_pso = "--pso";//for testing only
+    //	final static String opt_rmm_pso = "--pso";//for testing only
 //    @Parameter(names = opt_rmm_pso, description = "PSO memory model", hidden = true)
     public boolean rmm_pso;
 
-	final static String opt_max_len = "--maxlen";
+    final static String opt_max_len = "--maxlen";
     final static String default_max_len= "1000";
     @Parameter(names=opt_max_len, description = "Window size", hidden = true, descriptionKey = "2010")
     public long window_size = 1000;
 
-//	final static String opt_no_schedule = "--noschedule";
+    //	final static String opt_no_schedule = "--noschedule";
 //    @Parameter(names=opt_no_schedule, description = "not report schedule", hidden = true)
     //ok, let's make noschedule by default
     public boolean noschedule = true;
 
-	final static String opt_no_branch = "--nobranch";
+    final static String opt_no_branch = "--nobranch";
     @Parameter(names=opt_no_branch, description = "Use no branch model", hidden = true, descriptionKey = "2020")
     public boolean nobranch;
 
-	final static String opt_no_volatile = "--novolatile";
+    final static String opt_no_volatile = "--novolatile";
     @Parameter(names=opt_no_volatile, description = "Exclude volatile variables", hidden = true, descriptionKey = "2030")
     public boolean novolatile;
 
-	final static String opt_allrace = "--allrace";
+    final static String opt_allrace = "--allrace";
     @Parameter(names=opt_allrace, description = "Check all races", hidden = true, descriptionKey = "2040")
     public boolean allrace;
 
-//	final static String opt_all_consistent = "--allconsistent";
+    //	final static String opt_all_consistent = "--allconsistent";
 //    @Parameter(names = opt_all_consistent, description = "require all read-write consistent", hidden = true)
     public boolean allconsistent;
 
-//	final static String opt_constraint_outdir = "--outdir";
+    //	final static String opt_constraint_outdir = "--outdir";
 //    @Parameter(names = opt_constraint_outdir, description = "constraint file directory", hidden = true)
     public String constraint_outdir;
 
     public final static String opt_table_name = "--table";
-//    @Parameter(names = opt_table_name, description = "Name of the table storing the log", hidden = true)
+    //    @Parameter(names = opt_table_name, description = "Name of the table storing the log", hidden = true)
     public String tableName = null;
 
     final static String opt_smt_solver = "--solver";
     @Parameter(names = opt_smt_solver, description = "Solver command to use (SMT-LIB v1.2)", hidden = true, descriptionKey = "2050")
-    
+
     //using the absolute path
     public String smt_solver = "-smt2 -T:600 -st";//"\"" + OS.current().getNativeExecutable("z3") + "\"" + " -smt";
 
-	final static String opt_solver_timeout = "--solver_timeout";
+    final static String opt_solver_timeout = "--solver_timeout";
     @Parameter(names = opt_solver_timeout, description = "Solver timeout in seconds", hidden = true, descriptionKey = "2060")
     public long solver_timeout = 600;
 
-	final static String opt_solver_memory = "--solver_memory";
-//    @Parameter(names = opt_solver_memory, description = "solver memory size in MB", hidden = true)
+    final static String opt_solver_memory = "--solver_memory";
+    //    @Parameter(names = opt_solver_memory, description = "solver memory size in MB", hidden = true)
     public long solver_memory = 8000;
 
-	final static String opt_timeout = "--timeout";
+    final static String opt_timeout = "--timeout";
     @Parameter(names = opt_timeout, description = "Rv-predict timeout in seconds", hidden = true, descriptionKey = "2070")
     public long timeout = 3600;
 
-//    final static String opt_smtlib1 = "--smtlib1";
+    //    final static String opt_smtlib1 = "--smtlib1";
 //    @Parameter(names = opt_smtlib1, description = "use constraint format SMT-LIB v1.2", hidden = true)
     public boolean smtlib1 = true;
 
-	final static String opt_optrace = "--optrace";
-//    @Parameter(names = opt_optrace, description = "optimize race detection", hidden = true)
+    final static String opt_optrace = "--optrace";
+    //    @Parameter(names = opt_optrace, description = "optimize race detection", hidden = true)
     //by default optrace is true
     public boolean optrace = true;
 
 
-	public final static String opt_outdir = "--dir";
+    public final static String opt_outdir = "--dir";
     @Parameter(names = opt_outdir, description = "Output directory", hidden = true, descriptionKey = "8000")
     public String outdir = "tmp";
 
-	final static String short_opt_verbose = "-v";
+    final static String short_opt_verbose = "-v";
     final static String opt_verbose = "--verbose";
     @Parameter(names = {short_opt_verbose, opt_verbose}, description = "Generate more verbose output", descriptionKey = "9000")
     public boolean verbose;

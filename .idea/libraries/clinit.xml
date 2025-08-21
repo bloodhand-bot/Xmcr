@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="clinit">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/benchmarks/BufferedInputStream/lib/clinit.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

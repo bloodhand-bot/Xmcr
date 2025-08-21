@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ConcurrentHashMapSource">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/benchmarks/ConcurrentHashMap/jar/ConcurrentHashMapSource.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

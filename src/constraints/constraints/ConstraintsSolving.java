@@ -35,7 +35,7 @@ public class ConstraintsSolving
 	public Vector<String> schedule;
 	public HashSet<String> unsats;
 
-	private boolean sat;
+	public boolean sat = false;
 
     private long timeout;
 	
@@ -80,12 +80,6 @@ public class ConstraintsSolving
 
 		String Z3_PATH = "z3";
 
-		if (OS.indexOf("mac") >= 0) {
-        	//Z3_PATH = "../z3-osx/bin/z3";
-		} else {
-			Z3_PATH = "./z3-ubuntu/bin/z3";
-		}
-		//let the users to install z3
 
         CMD.add(Z3_PATH);
         for(String arg: quotes){
@@ -181,6 +175,7 @@ public class ConstraintsSolving
 	{
 		PrintWriter smtWriter = null;
 		try{
+            sat = false;
 			smtWriter = Util.newWriter(smtFile, true);
 		  	smtWriter.println(msg);
 		    smtWriter.close();
