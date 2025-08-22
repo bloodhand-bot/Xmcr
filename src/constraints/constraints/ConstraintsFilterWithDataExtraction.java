@@ -78,16 +78,15 @@ public class ConstraintsFilterWithDataExtraction {
             }
 
             // Extract data for analysis
-            System.out.println("===================" + (filterCount + 1));
-            System.out.println("DEBUG: 原始约束长度: " + causalConstraint.length());
-            System.out.println("DEBUG: 处理后约束: [" + causalStr + "]");
-            System.out.println("DEBUG: assertsString数量: " + assertsString.size());
+
             data_output(variables, assertsString, basePath);
 
             // Check each assertion for conflicts
             for (String anAssert : assertsString) {
+                System.out.println(orderMapList);
                 Queue<Pair<String, String>> rebuildCausalConstraint = rebuildExpression_with_expression(anAssert, orderMapList);
-
+                System.out.println("1111");
+                System.out.println(rebuildCausalConstraint.toString());
                 if (!rebuildCausalConstraint.isEmpty()) {
                     Stack<Pair<String, String>> stack = new Stack<>();
                     while (!rebuildCausalConstraint.isEmpty()) {
@@ -637,7 +636,10 @@ public class ConstraintsFilterWithDataExtraction {
      */
     public static void tagupload(String path, String tag) {
         // GC-MCR_风格：只在第一次调用时初始化文件
+        System.out.println("222");
+        System.out.println(filterCount);
         if (filterCount == 0) {
+            System.out.println("here");
             File file = new File(path);
             if (file.exists()) {
                 ftagexist = true;

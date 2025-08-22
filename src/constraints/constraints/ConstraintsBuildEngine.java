@@ -1539,8 +1539,8 @@ public class ConstraintsBuildEngine
 
         // Apply ConstraintsFilter to check for conflicts and simplify constraints if enabled
         if (Configuration.useConstraintsFilter) {
-            System.out.println("DEBUG: 使用约束过滤, 模式: " + Configuration.constraintsFilterMode);
-            System.out.println("DEBUG: 原始因果约束长度: " + causalConstraint.length());
+            //System.out.println("DEBUG: 使用约束过滤, 模式: " + Configuration.constraintsFilterMode);
+            //System.out.println("DEBUG: 原始因果约束长度: " + causalConstraint.length());
 
             ConstraintsFilter filter = new ConstraintsFilter(Configuration.constraintsFilterMode);
             javafx.util.Pair<Boolean, StringBuilder> filterResult = filter.doFilter_with_expression(
@@ -1549,16 +1549,16 @@ public class ConstraintsBuildEngine
                     causalConstraint
             );
 
-            System.out.println("DEBUG: 过滤结果: " + filterResult.getKey());
-            System.out.println("DEBUG: 过滤后约束长度: " + filterResult.getValue().length());
+            //System.out.println("DEBUG: 过滤结果: " + filterResult.getKey());
+            //System.out.println("DEBUG: 过滤后约束长度: " + filterResult.getValue().length());
 
-            if (filterResult.getValue().length() > 0) {
+            /*if (filterResult.getValue().length() > 0) {
                 System.out.println("DEBUG: 过滤后约束内容: [" + filterResult.getValue().toString() + "]");
             } else {
                 System.out.println("DEBUG: 过滤后约束为空");
-            }
-            System.out.println("DEBUG: 原始约束内容: [" + causalConstraint.toString() + "]");
-            System.out.println("DEBUG: ========== 约束处理分界线 ==========");
+            }*/
+            //System.out.println("DEBUG: 原始约束内容: [" + causalConstraint.toString() + "]");
+            //System.out.println("DEBUG: ========== 约束处理分界线 ==========");
 
             // If filter returns false, the constraint is unsatisfiable, return early
             if (!filterResult.getKey()) {
@@ -1566,7 +1566,7 @@ public class ConstraintsBuildEngine
                 if ("data_extraction".equals(Configuration.constraintsFilterMode)) {
                     // 只在数据提取模式下更新统计信息
                     ConstraintsFilterWithDataExtraction.filtedConstraintsCounts++;
-                    ConstraintsFilterWithDataExtraction.filterCount++;
+                    //ConstraintsFilterWithDataExtraction.filterCount++;
                     System.out.println("过滤掉了第" + ConstraintsFilterWithDataExtraction.filtedConstraintsCounts + "个约束求解......");
                 }
                 ExplorationStatsListener.numFilterConstraints += 1;
@@ -1578,15 +1578,15 @@ public class ConstraintsBuildEngine
             if ("data_extraction".equals(Configuration.constraintsFilterMode)) {
                 // 只在数据提取模式下更新统计信息
                 ConstraintsFilterWithDataExtraction.totalConstraintsCounts++;
-                ConstraintsFilterWithDataExtraction.filterCount++;
+                //ConstraintsFilterWithDataExtraction.filterCount++;
                 System.out.println("进行了第" + ConstraintsFilterWithDataExtraction.totalConstraintsCounts + "次约束求解......");
             }
 
             // Use the filtered causal constraint if available and valid
             StringBuilder filteredCausalConstraint = filterResult.getValue();
             if (filteredCausalConstraint.length() > 0) {
-                System.out.println("DEBUG: 使用过滤后的约束");
-                System.out.println("DEBUG: 过滤后约束内容: " + filteredCausalConstraint.toString());
+                //System.out.println("DEBUG: 使用过滤后的约束");
+                //System.out.println("DEBUG: 过滤后约束内容: " + filteredCausalConstraint.toString());
                 causalConstraint = filteredCausalConstraint;
             } else {
                 System.out.println("DEBUG: 过滤后约束为空，使用原始约束");
@@ -1618,6 +1618,7 @@ public class ConstraintsBuildEngine
                 // 求解失败
                 ConstraintsFilterWithDataExtraction.tagupload(ConstraintsFilterWithDataExtraction.basePath + "tag.txt", "0");
             }
+            ConstraintsFilterWithDataExtraction.filterCount++;
         }
 
         /**
